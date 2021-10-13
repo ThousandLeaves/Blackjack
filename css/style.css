@@ -1,0 +1,31 @@
+body {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   margin-top: 50vh;
+   background-color: black;
+}
+
+#gameContentBox {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   width: 70vw;
+}
+
+#gamePlayArea {
+   display: grid;
+   width: 100%;
+   grid-template-columns: repeat(11, 1fr);
+   grid-template-rows: repeat(5, 1fr);
+   background-color: aqua;
+}
+
+#gameTextArea {
+   width: 100%;
+   background-color: blueviolet;
+}
+
+.tester {
+   color: white;
+}
