@@ -6,11 +6,15 @@
  * player and dealer are considered as player objects for the purposes of processing game logic.
  */
 
+"use strict";
+
 export const Player = (hand, score) => {
     return {
 
         _hand: hand,
         _score: score = 0,
+        _aceHigh: true,
+        _roundsWon: 0,
 
         getHand() {
             return this._hand;
@@ -26,6 +30,48 @@ export const Player = (hand, score) => {
 
         addCard(card) {
             this._hand.push(card);
+        },
+
+        addWin() {
+            this._roundsWon += 1;
+        },
+
+        removeHand() {
+            this._hand = [];
+        },
+
+        /* Bit slower than addScore, only used when changing aces to low */
+        recalculateScore() {
+            this._score = 0;
+            for (let i of this._hand) {
+                this.addScore(i.getValue().points);
+            }
+        },
+
+        hasNatural() {
+            if (this._hand.length === 2) {
+                if (this._score === 21) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                // raise some issue about improper length
+            }
+        },
+
+        /* Evaluate hand and adjust ace to low if high would result in loss
+            Should only be called when player/dealer score > 21 */
+        determineAcesValue() {
+            for (let i of this._hand) {
+                console.log(i);
+                if(i.getValue().rank === "Ace") {
+                    i.setAce("low");
+                    this.recalculateScore();
+                    return "low";
+                }
+            }
+            return "high";
         }
 
     }

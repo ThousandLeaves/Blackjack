@@ -55,21 +55,27 @@ const BlackjackGame = (() => {
         Deck.populateDeck();
         Deck.shuffleDeck();
         for (let i = 1; i <= 4; i++) {
-            let newCard = Deck.takeCard();
             if(i % 2 === 1) {
-                player1.addCard(newCard);
+                addCardsToHand(player1);
             } else {
-                dealer.addCard(newCard);
+                addCardsToHand(dealer);
             }
 
         }
+        checkNaturals();
+        console.log(player1.getHand());
+        console.log("player score: " + player1.getScore());
     }
 
     var gameHit = () => {
         addCardsToHand(player1);
         if (player1.getScore() > 21) {
-            gameCompletionState("lose");
+            if (checkAcesHighOrLow(player1) === "high") {
+                gameCompletionState("lose", dealer);
+            }
         }
+        console.log(player1.getHand());
+        console.log("player score: " + player1.getScore());
     }
 
     var gameStand = () => {
@@ -78,24 +84,28 @@ const BlackjackGame = (() => {
         while (true) {
             if (dealer.getScore() < 17) {
                 addCardsToHand(dealer);
+                console.log(dealer.getHand());
+                console.log("dealer score: " + dealer.getScore());
             } else if (dealer.getScore() <= 21) {
                 // dealer stands
                 break;
             } else {
-                // Dealer loses
-                isDealerBust = true;
-                break;
+                if (checkAcesHighOrLow(dealer) === "high") {
+                    // Dealer loses
+                    isDealerBust = true;
+                    break;
+                }
             }
         }
 
         /* Check if dealer busted, otherwise compare dealer & player scores */
         if (isDealerBust) {
-            gameCompletionState("win");
+            gameCompletionState("win", player1);
         } else {
             if (player1.getScore() > dealer.getScore()) {
-                gameCompletionState("win");
+                gameCompletionState("win", player1);
             } else if (player1.getScore() < dealer.getScore()) {
-                gameCompletionState("lose");
+                gameCompletionState("lose", dealer);
             } else {
                 gameCompletionState("draw");
             }
@@ -104,7 +114,7 @@ const BlackjackGame = (() => {
 
     var gameResign = () => {
         alert("You have given up.");
-        gameCompletionState("lose");
+        gameCompletionState("lose", dealer);
     }
 
     /*******************************************************************************
@@ -118,7 +128,27 @@ const BlackjackGame = (() => {
         player.addScore(newCard.getValue().points);     
     }
 
-    var gameCompletionState = (state) => {
+    var checkNaturals = () => {
+        let playerNatural = player1.hasNatural();
+        let dealerNatural = dealer.hasNatural();
+
+        if (playerNatural && dealerNatural) {
+            gameCompletionState("draw");
+        } else if (playerNatural) {
+            alert("Player natural");
+            gameCompletionState("win", player1);
+        } else if (dealerNatural) {
+            alert("Dealer natural");
+            gameCompletionState("lose", dealer);
+        }
+    }
+
+    /* Called whenever dealer or player would go over 21 */
+    var checkAcesHighOrLow = (player) => {
+        return player.determineAcesValue();
+    }
+
+    var gameCompletionState = (state, winner = dealer) => {
         if (state === "win") {
             alert("You have won.");
         } else if (state === "lose") {
@@ -126,12 +156,19 @@ const BlackjackGame = (() => {
         } else if (state === "draw") {
             alert("Draw game!");
         } else {
-            
+            // Do something extremely mysterious
         }
+        if (state !== "draw") {
+            winner.addWin();
+        }
+        alert("removing hands.");
+        player1.removeHand();
+        dealer.removeHand();
     }
 
-
-    /* Add event listeners to buttons to separate design from implementation */
+    /*******************************************************************************
+     * Add event listeners to buttons to separate design from implementation
+     *******************************************************************************/
     let gameButtons = document.querySelectorAll("button");
     gameButtons.forEach(element => element.addEventListener("click", getButtonClick));
 

@@ -11,7 +11,7 @@
 const Update = (() => {
 
     const update = () => {
-        alert("You're updating the view.");
+        //alert("You're updating the view.");
     }
 
     /* Future functionality here */

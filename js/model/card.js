@@ -6,7 +6,7 @@
  * respected.
  */
 
-'use strict';
+"use strict";
 
 export function Card(suit, rank, points) {
     return {
@@ -21,11 +21,13 @@ export function Card(suit, rank, points) {
         },
 
         setAce(value) {
-            if (rank === "ace") {
+            alert("looking at ace.");
+            if (this._rank === "Ace") {
+                alert("really looking at ace.");
                 if (value === "high") {
-                    this._points = 11;
-                } else {
-                    this._points = 1;
+                    this._points = "11";
+                } else if (value === "low") {
+                    this._points = "1";
                 }
             } else {
                 // Some kind of exception throw

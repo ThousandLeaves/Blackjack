@@ -7,13 +7,13 @@
  * The main controller accesses the deck module to populate and shuffle the deck, as well as to take cards and set the
  * ace values dependent on the hands of the dealer and player.
  */
-'use strict';
+"use strict";
 
 import { Card } from './card.js';
 
 const Deck = (() => {
-    /* Const arrays define potential card values for deck. Ace omitted from standard ranks */
-    var aceValue = 11; // Default value
+    /* Const arrays define potential card values for deck. */
+    var aceValue = "11"; // Default value. Use different rule set to change
     const SUIT = ["Diamond", "Heart", "Spade", "Club"];
     const RANK = { 2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8", 9: "9", 10: "10", Jack: "10", Queen: "10", King: "10", Ace: aceValue};
     const DECK_MAX_SIZE = 52;
