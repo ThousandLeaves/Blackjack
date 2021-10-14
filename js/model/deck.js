@@ -1,14 +1,17 @@
 /**
  * [ ] deck.js
  * 
- * Info here
+ * The deck module is a singleton object that utilizes closure to simulate access modifiers. Only the methods returned
+ * from this module can be accessed remotely.
+ * 
+ * The main controller accesses the deck module to populate and shuffle the deck, as well as to take cards and set the
+ * ace values dependent on the hands of the dealer and player.
  */
 'use strict';
 
 import { Card } from './card.js';
 
 const Deck = (() => {
-
     /* Const arrays define potential card values for deck. Ace omitted from standard ranks */
     var aceValue = 11; // Default value
     const SUIT = ["Diamond", "Heart", "Spade", "Club"];
@@ -56,8 +59,6 @@ const Deck = (() => {
         getAceValue,
         takeCard
     };
-
-
 })()
 
 export { Deck }

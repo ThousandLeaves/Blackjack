@@ -44,11 +44,10 @@ const BlackjackGame = (() => {
         Update.update();
     }
 
-    /**
+    /*******************************************************************************
      * Game interactive functions:
      * These functions provide the core gameplay actions that respond to player input.
-     */
-
+     *******************************************************************************/
     /* gameDeal initializes a new game. */
     var gameDeal = () => {
         player1 = Player(new Array(), 0);
@@ -68,36 +67,69 @@ const BlackjackGame = (() => {
 
     var gameHit = () => {
         addCardsToHand(player1);
+        if (player1.getScore() > 21) {
+            gameCompletionState("lose");
+        }
     }
 
     var gameStand = () => {
-        alert("You don't take a card.");
-        addCardsToHand(dealer);
+        let isDealerBust = false;
+
+        while (true) {
+            if (dealer.getScore() < 17) {
+                addCardsToHand(dealer);
+            } else if (dealer.getScore() <= 21) {
+                // dealer stands
+                break;
+            } else {
+                // Dealer loses
+                isDealerBust = true;
+                break;
+            }
+        }
+
+        /* Check if dealer busted, otherwise compare dealer & player scores */
+        if (isDealerBust) {
+            gameCompletionState("win");
+        } else {
+            if (player1.getScore() > dealer.getScore()) {
+                gameCompletionState("win");
+            } else if (player1.getScore() < dealer.getScore()) {
+                gameCompletionState("lose");
+            } else {
+                gameCompletionState("draw");
+            }
+        }
     }
 
     var gameResign = () => {
         alert("You have given up.");
+        gameCompletionState("lose");
     }
 
-    /**
+    /*******************************************************************************
      * Game helper functions:
      * Helper functions indirectly work with the above functions to do things like
      * determine the game state.
-     */
-
-    var evaluateScore = (player) => {
-
-        if (player.getScore() > 21) {
-            alert("Busted!");
-        }
-    }
-
+     ********************************************************************************/
     var addCardsToHand = (player) => {
         let newCard = Deck.takeCard();
         player.addCard(newCard);
-        player.addScore(newCard.getValue().points);
-        evaluateScore(player);        
+        player.addScore(newCard.getValue().points);     
     }
+
+    var gameCompletionState = (state) => {
+        if (state === "win") {
+            alert("You have won.");
+        } else if (state === "lose") {
+            alert("You have lost.");
+        } else if (state === "draw") {
+            alert("Draw game!");
+        } else {
+            
+        }
+    }
+
 
     /* Add event listeners to buttons to separate design from implementation */
     let gameButtons = document.querySelectorAll("button");

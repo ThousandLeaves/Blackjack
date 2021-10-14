@@ -10,7 +10,6 @@
 
 export function Card(suit, rank, points) {
     return {
-
         _suit: suit,
         _rank: rank,
         _points: points,
