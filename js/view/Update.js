@@ -77,13 +77,12 @@ const Update = (() => {
 
             /* Display remaining drawn cards */
             if (gameStateCollection.dealerHand.length > 2) {
-                console.log("drawing dealers hand:");
-                console.log(gameStateCollection.dealerHand[gameStateCollection.dealerHand.length - 1].getValue().suit)
-                console.log(gameStateCollection.dealerHand[gameStateCollection.dealerHand.length - 1].getValue().rank)
-                console.log("==========")
-                suit = gameStateCollection.dealerHand[gameStateCollection.dealerHand.length - 1].getValue().suit;
-                rank = gameStateCollection.dealerHand[gameStateCollection.dealerHand.length - 1].getValue().rank;  
-                drawCard(suit, rank, 0)  
+                for (let i = 2; i < gameStateCollection.dealerHand.length; i++) {
+                    suit = gameStateCollection.dealerHand[i].getValue().suit;
+                    rank = gameStateCollection.dealerHand[i].getValue().rank;  
+                    drawCard(suit, rank, 0);  
+                }
+
             }
         
 

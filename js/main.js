@@ -121,13 +121,15 @@ const BlackjackGame = (() => {
 
         while (dealer.getScore() < 17) {
             addCardsToHand(dealer);
-        }
-        if (dealer.getScore() > 21) {
-            if (checkAcesHighOrLow(dealer) === "high") {
-                        // Dealer loses
-                        isDealerBust = true;
+            if (dealer.getScore() > 21) {
+                if (checkAcesHighOrLow(dealer) === "high") {
+                            // Dealer loses
+                            isDealerBust = true;
+                }
             }
         }
+        console.log(dealer.getHand());
+
 
             let gameStateCollection = {
                 playerHand: player1.getHand(),
@@ -140,7 +142,7 @@ const BlackjackGame = (() => {
 
         /* Check if dealer busted, otherwise compare dealer & player scores */
         if (isDealerBust) {
-            console.log("BuStEd");
+            console.log("Dealer busts!");
             gameCompletionState("win", player1);
         } else {
             if (player1.getScore() > dealer.getScore()) {
