@@ -15,7 +15,7 @@
 
 import { Update } from "./view/Update.js";
 import { Deck } from "./model/deck.js";
-import { Player } from "./model/player.js"
+import { Player } from "./model/player.js";
 
 const BlackjackGame = (() => {
 
@@ -42,6 +42,10 @@ const BlackjackGame = (() => {
             /* Only available in first turn of game. Deals cards out to players/dealer */
             gameDeal();
             triggerAction = "deal";
+            if (checkNaturals() === true) {
+            gameStatus = "playing";
+            postGameDrawing = false;
+            }
         } else if(e.target.innerText === GAME_BUTTON_ARRAY[1]) {
             /* Player receives a card until choosing to stand or busting */
             gameHit();
@@ -95,9 +99,6 @@ const BlackjackGame = (() => {
             }
 
         }
-        if (checkNaturals() !== true) {
-            gameStatus = "playing";
-        }
     }
 
     var gameHit = () => {
@@ -128,8 +129,6 @@ const BlackjackGame = (() => {
                 }
             }
         }
-        console.log(dealer.getHand());
-
 
             let gameStateCollection = {
                 playerHand: player1.getHand(),
@@ -142,7 +141,6 @@ const BlackjackGame = (() => {
 
         /* Check if dealer busted, otherwise compare dealer & player scores */
         if (isDealerBust) {
-            console.log("Dealer busts!");
             gameCompletionState("win", player1);
         } else {
             if (player1.getScore() > dealer.getScore()) {
@@ -158,8 +156,7 @@ const BlackjackGame = (() => {
 
 
     var gameResign = () => {
-        alert("You have given up.");
-        gameCompletionState("lose", dealer);
+        gameCompletionState("resign", dealer);
     }
 
     /*******************************************************************************
@@ -176,17 +173,30 @@ const BlackjackGame = (() => {
     /* Checks if dealer or player has natural. Returns false otherwise, setting game state
     to "playing" */
     var checkNaturals = () => {
+
+        let triggerAction = "deal";
+        /* After every button click, update the view with new information */
+        let gameStateCollection = {
+            playerHand: player1.getHand(),
+            dealerHand: dealer.getHand(),
+            playerRoundsWon: player1.getRoundsWon(),
+            dealerRoundsWon: dealer.getRoundsWon(),
+            gameStatus: gameStatus
+        }
+        Update.update(triggerAction, gameStateCollection);
+
+
         let playerNatural = player1.hasNatural();
         let dealerNatural = dealer.hasNatural();
 
         if (playerNatural && dealerNatural) {
             gameCompletionState("draw");
         } else if (playerNatural) {
-            alert("Player natural");
-            gameCompletionState("win", player1);
+            console.log("nat");
+            gameCompletionState("naturalPlayer", player1);
         } else if (dealerNatural) {
-            alert("Dealer natural");
-            gameCompletionState("lose", dealer);
+            console.log("nat");
+            gameCompletionState("naturalDealer", dealer);
         } else {
             return false;
         }
@@ -205,10 +215,14 @@ const BlackjackGame = (() => {
             gameStatus = "You've won this round!";
         } else if (state === "lose") {
             gameStatus = "You've lost this round.";
-        } else if (state === "The round was a draw!") {
-            gameStatus = "draw";
-        } else {
-            // Do something extremely mysterious
+        } else if (state === "draw") {
+            gameStatus = "The round was a draw!";
+        } else if (state === "naturalPlayer") {
+            gameStatus = "Player natural! You've won.";
+        } else if (state === "naturalDealer") {
+            gameStatus = "Dealer natural! You've lost.";
+        } else if (state === "resign") {
+            gameStatus = "You've resigned.";
         }
 
         let gameStateCollection = {

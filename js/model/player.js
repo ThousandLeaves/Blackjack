@@ -50,8 +50,6 @@ export const Player = (hand, score) => {
             for (let i of this._hand) {
                 this.addScore(i.getValue().points);
             }
-            console.log("this is the player's score in player.js: ");
-            console.log(this._score);
         },
 
         hasNatural() {

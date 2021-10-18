@@ -13,34 +13,14 @@ const Update = (() => {
     /* The update method alters the DOM every time it is called based on new information */
     const update = (triggerAction, gameStateCollection) => {
 
-        // Testing card creation
         let suit;
         let rank;
-/*
-        for (let i = 0; i < 4; i++) {
-            suit = gameStateCollection.playerHand[i].getValue().suit;
-            rank = gameStateCollection.playerHand[i].getValue().rank;
-            const divElm = document.createElement("div");
-            const txtNode = document.createTextNode(suit + " " + rank);
-            divElm.appendChild(txtNode);
-            divElm.classList.add("dealerCard");
-
-            const parentElm = document.getElementById("dealerHand");
-            parentElm.appendChild(divElm);
-        }
-*/
-/*
-        // Testing card deletion
-        const playerParentElm = document.getElementById("playerHand");
-        while (playerParentElm.firstChild) {
-            playerParentElm.removeChild(playerParentElm.firstChild);
-        }
-*/
 
         if (triggerAction === "deal") {
             /* Remove placeholders that keep play area's shape */
             deleteAllCardElements();
             setGameButtonState(true, false, false, false);
+            setStatusText("The deck has been shuffled and the cards dealt. Good luck!");
 
             for (let h = 0; h < 2; h++) {
             /* Four initial cards when dealing */
@@ -56,7 +36,6 @@ const Update = (() => {
                         rank = gameStateCollection.dealerHand[h].getValue().rank;
                     }
                     /* Create card element */
-                    console.log("a!");
                     if (h !== 1 || i % 2 !== 0) {
                         drawCard(suit, rank, i % 2);
                     } else {
@@ -89,6 +68,11 @@ const Update = (() => {
         } else if (triggerAction === "resign") {
 
         } else if (triggerAction === "completed") {
+            if (gameStateCollection.gameStatus === "Dealer natural! You've lost." ||
+            gameStateCollection.gameStatus === "Player natural! You've won.") {
+                revealDealerCard(gameStateCollection.dealerHand);              
+            }
+                        revealDealerCard(gameStateCollection.dealerHand);
             setStatusText("Game over! " + gameStateCollection.gameStatus);
             setGameButtonState(false, true, true, true);
         }
@@ -121,6 +105,7 @@ const Update = (() => {
             txtNode = document.createTextNode(suit + " " + rank);
         } else {
             txtNode = document.createTextNode("");
+            divElm.style.background = "#E63946";
         }
 
         let parentElm;
@@ -146,7 +131,7 @@ const Update = (() => {
         let suit = gsc[1].getValue().suit;
         let rank = gsc[1].getValue().rank;
         let divElm = document.getElementsByClassName('dealerCard')[1];
-    
+        divElm.style.background = "#A8DADC";
         /* Don't draw on card if it contains content */
         if (divElm.textContent === "") {
             let txtNode = document.createTextNode(suit + " " + rank);
