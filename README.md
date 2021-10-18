@@ -23,5 +23,12 @@ Start another round by pressing **"deal"**. Dealing also shuffles the deck in th
 - Separation of design elements into MVC, use of JavaScript imports to separate out code into multiple files
 - Flexbox for wrapping elements and producing a visible play area regardless of view size
 
+## Future Considerations
+Future versions could implement additional features to improve the user experience. These could include:
+- Counting the number of player and dealer wins
+- Revealing the scores of the player and dealer when the game ends for easier parsing of information
+- Responsivity for mobile devices
+- Asynchronous JavaScript to allow for segmenting block actions such as the dealer drawing cards to happen incrementally instead of instantaneously
+
 ## Known Issues
 - Time constraints did not allow for unit testing. Manual tests revealed that the DOM does not update the dealer's face down card when the player or dealer uncommonly wins via a natural play. This likely could be fixed in the future via the implementation of asynchronous JavaScript.
