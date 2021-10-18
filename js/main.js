@@ -192,10 +192,8 @@ const BlackjackGame = (() => {
         if (playerNatural && dealerNatural) {
             gameCompletionState("draw");
         } else if (playerNatural) {
-            console.log("nat");
             gameCompletionState("naturalPlayer", player1);
         } else if (dealerNatural) {
-            console.log("nat");
             gameCompletionState("naturalDealer", dealer);
         } else {
             return false;

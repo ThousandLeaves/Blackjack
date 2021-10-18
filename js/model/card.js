@@ -21,16 +21,14 @@ export function Card(suit, rank, points) {
         },
 
         setAce(value) {
-            alert("looking at ace.");
             if (this._rank === "Ace") {
-                alert("really looking at ace.");
                 if (value === "high") {
                     this._points = "11";
                 } else if (value === "low") {
                     this._points = "1";
                 }
             } else {
-                // Some kind of exception throw
+                throw 'Expected Ace, received ' + this._rank;
             }
         },
 

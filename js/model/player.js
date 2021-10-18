@@ -60,7 +60,7 @@ export const Player = (hand, score) => {
                     return false;
                 }
             } else {
-                // raise some issue about improper length
+                /* raise some issue about improper length */
             }
         },
 
@@ -69,10 +69,15 @@ export const Player = (hand, score) => {
         determineAcesValue() {
             let aceValue = "high";
             for (let i of this._hand) {
-                console.log(i);
                 if(i.getValue().rank === "Ace") {
                     aceValue = "low"
-                    i.setAce(aceValue);
+                    try {
+                        i.setAce(aceValue);
+                    } catch (e) {
+                        // Warn that given card expected ace, received something else
+                        console.error(e);
+                    }
+
                     this.recalculateScore();
                 }
             }

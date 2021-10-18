@@ -72,21 +72,10 @@ const Update = (() => {
             gameStateCollection.gameStatus === "Player natural! You've won.") {
                 revealDealerCard(gameStateCollection.dealerHand);              
             }
-                        revealDealerCard(gameStateCollection.dealerHand);
+            revealDealerCard(gameStateCollection.dealerHand);
             setStatusText("Game over! " + gameStateCollection.gameStatus);
             setGameButtonState(false, true, true, true);
         }
-
-        /* check if game was won or lost to provide additional visual updates */
-
-        if (gameStateCollection.gameStatus === "win") {
-
-        } else if (gameStateCollection.gameStatus === "loss") {
-
-        } else if (gameStateCollection.gameStatus === "draw") {
-
-        }
-
     }
 
     /*******************************************************************************
@@ -100,17 +89,17 @@ const Update = (() => {
         let elemClass = "";
         let parentClass = "";
         let txtNode;
+        let parentElm;
         const divElm = document.createElement("div");
+
         if (faceDown === 0) {
             txtNode = document.createTextNode(suit + " " + rank);
         } else {
             txtNode = document.createTextNode("");
             divElm.style.background = "#E63946";
         }
-
-        let parentElm;
-
         divElm.appendChild(txtNode);
+        
         if (player === 0) {
             elemClass = "dealerCard";
             parentClass = "dealerHand";
