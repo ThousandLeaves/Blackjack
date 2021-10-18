@@ -34,13 +34,6 @@ button {
    width: 100%;
 }
 
-/*
-#gameTextArea {
-   width: 100%;
-   background-color: blueviolet;
-}
-*/
-
 #topMessageArea {
    color: #e63946;
    margin-top: 0.5em;
@@ -62,16 +55,6 @@ button {
 #btn-deal {
    margin-left: 0.25em;
 }
-
-#btn-hit {
-}
-
-#btn-stand {
-}
-
-#btn-resign {
-}
-
 .btnArea {
    margin: auto;
    padding-top: 5em;
