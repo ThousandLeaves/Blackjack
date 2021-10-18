@@ -2,23 +2,31 @@ body {
    display: flex;
    flex-direction: column;
    align-items: center;
-   margin-top: 50vh;
+   margin-top: 20vh;
    background-color: black;
+}
+
+button {
+   padding: 15px 32px;
+   text-align: center;
+   text-decoration: none;
+   display: inline-block;
+   font-size: 16px;
 }
 
 #gameContentBox {
    display: flex;
+   flex-wrap: wrap;
    flex-direction: column;
-   align-items: center;
-   width: 70vw;
+   justify-content: flex-start;
+
+   min-width: 70vw;
+   min-height: 50vh;
+   background-color: aqua;
 }
 
 #gamePlayArea {
-   display: grid;
    width: 100%;
-   grid-template-columns: repeat(11, 1fr);
-   grid-template-rows: repeat(5, 1fr);
-   background-color: aqua;
 }
 
 #gameTextArea {
@@ -26,6 +34,88 @@ body {
    background-color: blueviolet;
 }
 
-.tester {
+#topMessageArea {
+   margin-top: 0.5em;
+   text-align: center;
+}
+
+#dealerHand {
+   display: flex;
+   flex-direction: row;
+}
+
+#playerHand {
+   display: flex;
+   flex-direction: row;
+}
+
+#btnArea {
+   margin: auto;
+   padding-top: 5em;
+}
+
+#btn-deal {
+   margin-left: 0.25em;
+}
+
+#btn-hit {
+   grid-row-start: 12;
+   grid-column-start: 6;
+   grid-column-end: 6;
+}
+
+#btn-stand {
+   grid-row-start: 12;
+   grid-column-start: 7;
+   grid-column-end: 7;
+}
+
+#btn-resign {
+   grid-row-start: 12;
+   grid-column-start: 8;
+   grid-column-end: 8;
+}
+
+.playerCard {
+   background-color: darkgoldenrod;
+   margin: 0.25em;
+   width: 5em;
+   height: 7em;
+}
+
+.dealerCard {
+   background-color: blueviolet;
+   margin: 0.25em;
+   width: 5em;
+   height: 7em;
+}
+
+.placeholderCard {
+   background-color: aqua;
+   margin: 0.25em;
+   width: 5em;
+   height: 7em;
+}
+
+.dealerInfo {
+   grid-row-start: 1;
+   grid-row-end: 2;
+   grid-column-start: auto;
+   grid-column-end: auto;
+   margin-top: 2em;
+   margin-left: 0.25em;
+}
+
+.playerInfo {
+   grid-row-start: 1;
+   grid-row-end: 2;
+   grid-column-start: auto;
+   grid-column-end: auto;
+   margin-top: 3em;
+   margin-left: 0.25em;
+}
+
+.titleText {
    color: white;
+   padding-bottom: 1em;
 }

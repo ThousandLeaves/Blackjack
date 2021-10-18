@@ -23,6 +23,10 @@ export const Player = (hand, score) => {
         getScore() {
             return this._score;
         },
+        
+        getRoundsWon() {
+            return this._roundsWon;
+        },
 
         addScore(addAmt) {
             this._score += parseInt(addAmt);
@@ -46,6 +50,8 @@ export const Player = (hand, score) => {
             for (let i of this._hand) {
                 this.addScore(i.getValue().points);
             }
+            console.log("this is the player's score in player.js: ");
+            console.log(this._score);
         },
 
         hasNatural() {
@@ -63,16 +69,20 @@ export const Player = (hand, score) => {
         /* Evaluate hand and adjust ace to low if high would result in loss
             Should only be called when player/dealer score > 21 */
         determineAcesValue() {
+            let aceValue = "high";
             for (let i of this._hand) {
                 console.log(i);
                 if(i.getValue().rank === "Ace") {
-                    i.setAce("low");
+                    aceValue = "low"
+                    i.setAce(aceValue);
                     this.recalculateScore();
-                    return "low";
                 }
             }
-            return "high";
-        }
-
+            if (aceValue === "low") {
+                return "low";
+            } else {
+                 return "high";
+            }
+       }
     }
 }

@@ -18,24 +18,31 @@
         <![endif]-->
 
         <!-- Blackjack content displayed below -->
-        <main id="gameContentBox">
-            <!-- Contains game cards, labels and interactive buttons -->
-            <section id="gamePlayArea">
-                <div>
-                    <button>Deal</button>
-                    <button>Hit</button>
-                    <button>Stand</button>
-                    <button>Resign</button>
-                </div>
-            </section>
-            <!-- Contains status text about the game state -->
-            <section id="gameTextArea">b</section>
-
-        </main>
-
-        <section class="tester">
+        <section class="titleText">
             Blackjack Test
         </section>
+        <main id="gameContentBox">
+            <!-- Contains game cards, labels and interactive buttons -->
+<!--            <section id="gamePlayArea"> -->
+                <div><h2 id="topMessageArea">MESSAGE</h2></div>
+                <div class="dealerInfo">Dealer's hand:</div>
+                <section id="dealerHand">
+                   <div class="placeholderCard"></div>
+                </section>
+                <div class="playerInfo">Player's hand:</div>
+                <section id="playerHand">
+                    <div class=placeholderCard></div>
+                </section>
+                <section class="btnArea">
+                    <button id="btn-deal">Deal</button>
+                    <button id="btn-hit">Hit</button>
+                    <button id="btn-stand">Stand</button>
+                    <button id="btn-resign">Resign</button>
+                </section>
+
+<!--            </section> -->
+            <!-- Contains status text about the game state -->
+        </main>
         
         <script type="module" src="js/main.js" async defer></script>
     </body>

@@ -1,7 +1,7 @@
 /**
  * [ ] main.js
  * 
- * This file automatically imports all other modules and is the entry point for scripting behavior.
+ * This file imports all other modules and is the entry point for scripting behavior.
  * All interactions coming from index are processed here and router to their respective objects/modules.
  * 
  * main.js serves as the main logic controller, receiving input from the view and then routing that input
@@ -19,34 +19,63 @@ import { Player } from "./model/player.js"
 
 const BlackjackGame = (() => {
 
+    var isNewGame = true;
+    /* Game status describes the game state. Begins uninitialized, can be playing, win, loss, etc. */
+    var gameStatus = "uninitialized";
     var player1;
     var dealer;
+    var acesValue = "high";
  
     /* Define buttons in const in case names change later */
     const GAME_BUTTON_ARRAY = ["Deal", "Hit", "Stand", "Resign"];
 
     function getButtonClick(e) {
+        let updateType = "";
+        let triggerAction = "";
+        let postGameDrawing = true;
+        /* Signify game has started */
+        if (isNewGame) {
+            isNewGame = false;
+        }
+
         if(e.target.innerText === GAME_BUTTON_ARRAY[0]) {
             /* Only available in first turn of game. Deals cards out to players/dealer */
             gameDeal();
+            triggerAction = "deal";
         } else if(e.target.innerText === GAME_BUTTON_ARRAY[1]) {
             /* Player receives a card until choosing to stand or busting */
             gameHit();
+            triggerAction = "hit";
         } else if(e.target.innerText === GAME_BUTTON_ARRAY[2]) {
             /* Player does not draw more cards. Dealer draws until > 17 or bust */
             gameStand();
+            triggerAction = "stand";
+            postGameDrawing = false;
         } else if(e.target.innerText === GAME_BUTTON_ARRAY[3]) {
             /*  */
             gameResign();
+            triggerAction = "resign";
         }
 
-        /* After every button click, update the view with new information */
-        Update.update();
+        if (postGameDrawing) {
+            /* After every button click, update the view with new information */
+            let gameStateCollection = {
+                playerHand: player1.getHand(),
+                dealerHand: dealer.getHand(),
+                playerRoundsWon: player1.getRoundsWon(),
+                dealerRoundsWon: dealer.getRoundsWon(),
+                gameStatus: gameStatus
+            }
+            Update.update(triggerAction, gameStateCollection);
+        }
     }
 
     /*******************************************************************************
      * Game interactive functions:
      * These functions provide the core gameplay actions that respond to player input.
+     * 
+     * All interactive functions return an array value of updated gameplay elements
+     * that need to be refreshed on the DOM.
      *******************************************************************************/
     /* gameDeal initializes a new game. */
     var gameDeal = () => {
@@ -54,6 +83,10 @@ const BlackjackGame = (() => {
         dealer = Player(new Array(), 0);
         Deck.populateDeck();
         Deck.shuffleDeck();
+
+        /* Remove any cards from the player's hand */
+        player1.removeHand();
+        dealer.removeHand();
         for (let i = 1; i <= 4; i++) {
             if(i % 2 === 1) {
                 addCardsToHand(player1);
@@ -62,44 +95,52 @@ const BlackjackGame = (() => {
             }
 
         }
-        checkNaturals();
-        console.log(player1.getHand());
-        console.log("player score: " + player1.getScore());
+        if (checkNaturals() !== true) {
+            gameStatus = "playing";
+        }
     }
 
     var gameHit = () => {
+
         addCardsToHand(player1);
-        if (player1.getScore() > 21) {
-            if (checkAcesHighOrLow(player1) === "high") {
-                gameCompletionState("lose", dealer);
+
+        if (player1.getScore() > 21 && acesValue === "high") {
+            acesValue = checkAcesHighOrLow(player1);
+            if (acesValue === "high") {
+                gameCompletionState("lose", dealer);                
             }
+        } else if (player1.getScore() > 21 && acesValue === "low") {
+            gameCompletionState("lose", dealer);               
         }
-        console.log(player1.getHand());
-        console.log("player score: " + player1.getScore());
+
     }
 
     var gameStand = () => {
         let isDealerBust = false;
+        let triggerAction = "stand";
 
-        while (true) {
-            if (dealer.getScore() < 17) {
-                addCardsToHand(dealer);
-                console.log(dealer.getHand());
-                console.log("dealer score: " + dealer.getScore());
-            } else if (dealer.getScore() <= 21) {
-                // dealer stands
-                break;
-            } else {
-                if (checkAcesHighOrLow(dealer) === "high") {
-                    // Dealer loses
-                    isDealerBust = true;
-                    break;
-                }
+        while (dealer.getScore() < 17) {
+            addCardsToHand(dealer);
+        }
+        if (dealer.getScore() > 21) {
+            if (checkAcesHighOrLow(dealer) === "high") {
+                        // Dealer loses
+                        isDealerBust = true;
             }
         }
 
+            let gameStateCollection = {
+                playerHand: player1.getHand(),
+                dealerHand: dealer.getHand(),
+                playerRoundsWon: player1.getRoundsWon(),
+                dealerRoundsWon: dealer.getRoundsWon(),
+                gameStatus: gameStatus
+            }
+            Update.update(triggerAction, gameStateCollection);
+
         /* Check if dealer busted, otherwise compare dealer & player scores */
         if (isDealerBust) {
+            console.log("BuStEd");
             gameCompletionState("win", player1);
         } else {
             if (player1.getScore() > dealer.getScore()) {
@@ -110,7 +151,9 @@ const BlackjackGame = (() => {
                 gameCompletionState("draw");
             }
         }
+
     }
+
 
     var gameResign = () => {
         alert("You have given up.");
@@ -128,6 +171,8 @@ const BlackjackGame = (() => {
         player.addScore(newCard.getValue().points);     
     }
 
+    /* Checks if dealer or player has natural. Returns false otherwise, setting game state
+    to "playing" */
     var checkNaturals = () => {
         let playerNatural = player1.hasNatural();
         let dealerNatural = dealer.hasNatural();
@@ -140,6 +185,8 @@ const BlackjackGame = (() => {
         } else if (dealerNatural) {
             alert("Dealer natural");
             gameCompletionState("lose", dealer);
+        } else {
+            return false;
         }
     }
 
@@ -149,21 +196,35 @@ const BlackjackGame = (() => {
     }
 
     var gameCompletionState = (state, winner = dealer) => {
+
+        let triggerAction = "completed";
+        
         if (state === "win") {
-            alert("You have won.");
+            gameStatus = "You've won this round!";
         } else if (state === "lose") {
-            alert("You have lost.");
-        } else if (state === "draw") {
-            alert("Draw game!");
+            gameStatus = "You've lost this round.";
+        } else if (state === "The round was a draw!") {
+            gameStatus = "draw";
         } else {
             // Do something extremely mysterious
         }
+
+        let gameStateCollection = {
+            playerHand: player1.getHand(),
+            dealerHand: dealer.getHand(),
+            playerRoundsWon: player1.getRoundsWon(),
+            dealerRoundsWon: dealer.getRoundsWon(),
+            gameStatus: gameStatus
+        }
+        Update.update(triggerAction, gameStateCollection);
+
         if (state !== "draw") {
             winner.addWin();
         }
-        alert("removing hands.");
-        player1.removeHand();
-        dealer.removeHand();
+    }
+
+    const sleep = function(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     /*******************************************************************************
