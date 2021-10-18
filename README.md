@@ -1,7 +1,6 @@
 # Blackjack
 
-⚠️ [Play Blackjack in your browser here](https://thousandleaves.github.io/blackjack/)
-<a href="https://thousandleaves.github.io/blackjack/" target="_blank">Play Blackjack in your browser here</a>
+⚠️ <a href="https://thousandleaves.github.io/blackjack/" target="_blank" rel="noreferrer noopener">Play Blackjack in your browser here</a>
 
 Play the classic game of Blackjack in your web browser! This version adheres to the [Bicycle](https://bicyclecards.com/how-to-play/blackjack/) ruleset of Blackjack and features one player and one dealer opponent. Shuffle the deck with the [Fisher-Yates](http://extremelearning.com.au/fisher-yates-algorithm/) shuffling algorithm and then deal out the cards. Game updates happen instantaneously, including multiple card draws by the dealer. When choosing to stand or resign, the dealer's face-down card is revealed to the player. The game automatically counts aces as high until the player would bust, then declaring them as low.
 
