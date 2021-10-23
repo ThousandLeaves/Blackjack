@@ -63,14 +63,7 @@ const BlackjackGame = (() => {
 
         if (postGameDrawing) {
             /* After every button click, update the view with new information */
-            let gameStateCollection = {
-                playerHand: player1.getHand(),
-                dealerHand: dealer.getHand(),
-                playerRoundsWon: player1.getRoundsWon(),
-                dealerRoundsWon: dealer.getRoundsWon(),
-                gameStatus: gameStatus
-            }
-            Update.update(triggerAction, gameStateCollection);
+            packageStateAndUpdateView(triggerAction);
         }
     }
 
@@ -118,7 +111,6 @@ const BlackjackGame = (() => {
 
     var gameStand = () => {
         let isDealerBust = false;
-        let triggerAction = "stand";
 
         while (dealer.getScore() < 17) {
             addCardsToHand(dealer);
@@ -130,14 +122,7 @@ const BlackjackGame = (() => {
             }
         }
 
-            let gameStateCollection = {
-                playerHand: player1.getHand(),
-                dealerHand: dealer.getHand(),
-                playerRoundsWon: player1.getRoundsWon(),
-                dealerRoundsWon: dealer.getRoundsWon(),
-                gameStatus: gameStatus
-            }
-            Update.update(triggerAction, gameStateCollection);
+        packageStateAndUpdateView("stand");
 
         /* Check if dealer busted, otherwise compare dealer & player scores */
         if (isDealerBust) {
@@ -153,7 +138,6 @@ const BlackjackGame = (() => {
         }
 
     }
-
 
     var gameResign = () => {
         gameCompletionState("resign", dealer);
@@ -174,17 +158,7 @@ const BlackjackGame = (() => {
     to "playing" */
     var checkNaturals = () => {
 
-        let triggerAction = "deal";
-        /* After every button click, update the view with new information */
-        let gameStateCollection = {
-            playerHand: player1.getHand(),
-            dealerHand: dealer.getHand(),
-            playerRoundsWon: player1.getRoundsWon(),
-            dealerRoundsWon: dealer.getRoundsWon(),
-            gameStatus: gameStatus
-        }
-        Update.update(triggerAction, gameStateCollection);
-
+        packageStateAndUpdateView("deal");
 
         let playerNatural = player1.hasNatural();
         let dealerNatural = dealer.hasNatural();
@@ -210,8 +184,6 @@ const BlackjackGame = (() => {
 
     /* Triggers when a game round is complete */
     var gameCompletionState = (state, winner = dealer) => {
-
-        let triggerAction = "completed";
         
         if (state === "win") {
             gameStatus = "You've won this round!";
@@ -227,6 +199,17 @@ const BlackjackGame = (() => {
             gameStatus = "You've resigned.";
         }
 
+        packageStateAndUpdateView("completed");
+
+        if (state !== "draw") {
+            winner.addWin();
+        }
+    }
+
+    /* Creates an object containing data necessary for the view to accurately
+    portray the current state of the game. The action that triggered the 
+    update should also be provided. */
+    const packageStateAndUpdateView = (triggerAction) => {
         let gameStateCollection = {
             playerHand: player1.getHand(),
             dealerHand: dealer.getHand(),
@@ -235,10 +218,6 @@ const BlackjackGame = (() => {
             gameStatus: gameStatus
         }
         Update.update(triggerAction, gameStateCollection);
-
-        if (state !== "draw") {
-            winner.addWin();
-        }
     }
 
     const sleep = function(ms) {
