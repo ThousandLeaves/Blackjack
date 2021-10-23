@@ -156,6 +156,10 @@ const Update = (() => {
         document.getElementById('topMessageArea').innerHTML = text;
     }
 
+    const sleep = function(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     return { 
         update,
         revealDealerCard

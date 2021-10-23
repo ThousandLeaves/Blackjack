@@ -57,12 +57,17 @@ const Deck = (() => {
         console.log(deckContents);
     }
 
+    const emptyDeck = function() {
+        deckContents = [];
+    }
+
     return {
         populateDeck,
         shuffleDeck,
         setAceValue,
         getAceValue,
         takeCard,
+        emptyDeck,
         testGetDeckContents
     };
 })()

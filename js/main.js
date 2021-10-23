@@ -204,6 +204,8 @@ const BlackjackGame = (() => {
         if (state !== "draw") {
             winner.addWin();
         }
+
+        Deck.emptyDeck();
     }
 
     /* Creates an object containing data necessary for the view to accurately
