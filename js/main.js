@@ -43,8 +43,8 @@ const BlackjackGame = (() => {
             gameDeal();
             triggerAction = "deal";
             if (checkNaturals() === true) {
-            gameStatus = "playing";
-            postGameDrawing = false;
+                gameStatus = "playing";
+                postGameDrawing = false;
             }
         } else if(e.target.innerText === GAME_BUTTON_ARRAY[1]) {
             /* Player receives a card until choosing to stand or busting */
@@ -124,8 +124,8 @@ const BlackjackGame = (() => {
             addCardsToHand(dealer);
             if (dealer.getScore() > 21) {
                 if (checkAcesHighOrLow(dealer) === "high") {
-                            // Dealer loses
-                            isDealerBust = true;
+                    // Dealer loses
+                    isDealerBust = true;
                 }
             }
         }
@@ -191,10 +191,13 @@ const BlackjackGame = (() => {
 
         if (playerNatural && dealerNatural) {
             gameCompletionState("draw");
+            return true;
         } else if (playerNatural) {
             gameCompletionState("naturalPlayer", player1);
+            return true;
         } else if (dealerNatural) {
             gameCompletionState("naturalDealer", dealer);
+            return true;
         } else {
             return false;
         }
@@ -205,6 +208,7 @@ const BlackjackGame = (() => {
         return player.determineAcesValue();
     }
 
+    /* Triggers when a game round is complete */
     var gameCompletionState = (state, winner = dealer) => {
 
         let triggerAction = "completed";

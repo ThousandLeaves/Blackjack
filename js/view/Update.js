@@ -70,7 +70,7 @@ const Update = (() => {
         } else if (triggerAction === "completed") {
             if (gameStateCollection.gameStatus === "Dealer natural! You've lost." ||
             gameStateCollection.gameStatus === "Player natural! You've won.") {
-                revealDealerCard(gameStateCollection.dealerHand);              
+                /* Future functionality here */        
             }
             revealDealerCard(gameStateCollection.dealerHand);
             setStatusText("Game over! " + gameStateCollection.gameStatus);
