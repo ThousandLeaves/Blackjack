@@ -11,7 +11,7 @@
 const Update = (() => {
 
     /* The update method alters the DOM every time it is called based on new information */
-    const update = (triggerAction, gameStateCollection) => {
+    const update = async (triggerAction, gameStateCollection) => {
 
         let suit;
         let rank;
@@ -59,9 +59,8 @@ const Update = (() => {
                 for (let i = 2; i < gameStateCollection.dealerHand.length; i++) {
                     suit = gameStateCollection.dealerHand[i].getValue().suit;
                     rank = gameStateCollection.dealerHand[i].getValue().rank;  
-                    drawCard(suit, rank, 0);  
+                    await sleep(800).then(() => drawCard(suit, rank, 0));
                 }
-
             }
         
 

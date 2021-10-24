@@ -222,10 +222,6 @@ const BlackjackGame = (() => {
         Update.update(triggerAction, gameStateCollection);
     }
 
-    const sleep = function(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
     /*******************************************************************************
      * Add event listeners to buttons to separate design from implementation
      *******************************************************************************/
