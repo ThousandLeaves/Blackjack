@@ -34,7 +34,11 @@ Future versions could implement additional features to improve the user experien
 - Asynchronous JavaScript to allow for segmenting block actions such as the dealer drawing cards to happen incrementally instead of instantaneously
 
 ## Known Issues
-- ~~Manual tests revealed that the DOM does not update the dealer's face down card when the player or dealer uncommonly wins via a natural play. This likely could be fixed in the future via the implementation of asynchronous JavaScript.~~
+- ~~Minor: Manual tests revealed that the DOM does not update the dealer's face down card when the player or dealer uncommonly wins via a natural play. This likely could be fixed in the future via the implementation of asynchronous JavaScript.~~
+
+- ~~Severe: Multiple cards of the same suit and value can sometimes be drawn.~~
 
 ## Fixed Issues
 - Naturals now properly update the view. The dealer's face-down card will now flip automatically when the player or dealer is dealt a natural hand.
+
+- Starting another round no longer fails to clear the current deck, elminating the risk of drawing multiples of the same value and suit.
