@@ -152,7 +152,7 @@ const Update = (() => {
     }
 
     const setStatusText = function(text) {
-        document.getElementById('topMessageArea').innerHTML = text;
+        document.getElementById('topMessageArea').textContent = text;
     }
 
     const sleep = function(ms) {
